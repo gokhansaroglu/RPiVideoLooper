@@ -25,7 +25,7 @@ if [ -n "$seamless" ] && [[ ! "$seamless" -eq 0 ]]; then
 fi
 
 current=0
-for f in `ls $FILES | grep ".mp4$\|.avi$\|.mkv$\|.mp3$\|.mov$\|.mpg$\|.flv$\|.m4v$"`
+for f in `ls $FILES | grep ".mp4$\|.avi$\|.mkv$\|.mp3$\|.mov$\|.mpg$\|.flv$\|.m4v$|.jpg$"`
 do
         vids[$current]="$f"
         let current+=1
@@ -48,6 +48,13 @@ else
 		current=0
 	fi
 
-	/usr/bin/omxplayer -r -o "$audio_source" "$FILES${vids[$current]}"
+  if [[ $FILES${vids[$current]} == *.jpg ]]; then
+    /usr/bin/fbi -noverbose -t 1 -T 1 "$FILES${vids[$current]}"
+    sleep 10
+  else 
+	 /usr/bin/omxplayer -r -o "$audio_source" "$FILES${vids[$current]}"
+  fi
+  
+  
 fi
 done
